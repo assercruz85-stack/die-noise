@@ -1,6 +1,6 @@
 # Die Noise
 
-**An octave pedal that ruins everything. By Kings Die Here.**
+**An octave pedal that ruins everything. By Kings Die Here, metalcore band from Portugal.**
 
 Die Noise is free software, based on [The Calm](https://github.com/wn6134/the-calm) by BetaRabbit (AGPL-3.0). See [License](#license).
 
