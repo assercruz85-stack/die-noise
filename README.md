@@ -10,8 +10,6 @@ octave jumps: hold a switch, the pitch rises; let go, it's back.
 
 <p align="center"><img src="docs/cover.jpg" alt="Die Noise pedal" width="560"></p>
 
-<p align="center"><img src="docs/screenshot.png" alt="Die Noise plugin interface" width="320"></p>
-
 - Formats: **VST3, AU, CLAP** on macOS (Apple Silicon and Intel, macOS 11+);
   **VST3 and CLAP** on Windows (x64; on Windows on ARM they run in x64 and ARM64EC hosts such as REAPER).
 - Stereo or mono, any sample rate, low CPU usage.
