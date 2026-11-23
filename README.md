@@ -1,12 +1,14 @@
-# The Calm
+# Die Noise
 
-**An octave pedal that ruins everything, calmly.**
+**An octave pedal that ruins everything. By Kings Die Here.**
 
-The Calm shifts your guitar up one or two octaves with a grainy, slightly broken pitch shifter, then lets
+Die Noise is free software, based on [The Calm](https://github.com/wn6134/the-calm) by BetaRabbit (AGPL-3.0). See [License](#license).
+
+Die Noise shifts your guitar up one or two octaves with a grainy, slightly broken pitch shifter, then lets
 you detune it, scramble it and turn it into a resonant mess. It is built for momentary, foot-pressed
 octave jumps: hold a switch, the pitch rises; let go, it's back.
 
-<p align="center"><img src="docs/screenshot.png" alt="The Calm" width="320"></p>
+<p align="center"><img src="docs/screenshot.png" alt="Die Noise" width="320"></p>
 
 - Formats: **VST3, AU, CLAP** on macOS (Apple Silicon and Intel, macOS 11+);
   **VST3 and CLAP** on Windows (x64; on Windows on ARM they run in x64 and ARM64EC hosts such as REAPER).
@@ -19,9 +21,9 @@ octave jumps: hold a switch, the pitch rises; let go, it's back.
 | **UP** | Hold for **+1 octave**. Right-click → **Latch** to make it a toggle. |
 | **WAY UP** | Hold for **+2 octaves**. Right-click → **Latch**. Only one octave switch is active at a time. |
 | **RISE** | How long the pitch takes to glide up when you press a switch (0 – 1.5 s). Release is instant. Right-click → **Tempo Sync** to set it in note values (1/32 – 2 bars) instead. |
-| **CHILL** | Adds two detuned voices around the octave: from a gentle chorus to dissonant chaos. |
-| **ORDER** | Random pitch wobble and stutter. Low settings drift, high settings fall apart. |
-| **SLOTH** | A resonant comb in front of the shifter: metallic ringing that grows towards the top of the knob. Combined with ORDER it turns into a smeared, unstable drone. |
+| **DETUNE** | Adds two detuned voices around the octave: from a gentle chorus to dissonant chaos. |
+| **RUIN** | Random pitch wobble and stutter. Low settings drift, high settings fall apart. |
+| **RING** | A resonant comb in front of the shifter: metallic ringing that grows towards the top of the knob. Combined with ORDER it turns into a smeared, unstable drone. |
 | **INPUT** | Input gain, −24 to +24 dB. |
 | **GATE** | Noise gate threshold. Fully left is **Off**. |
 | **BLEND** | Dry/wet mix while a switch is engaged. |
@@ -31,7 +33,7 @@ octave jumps: hold a switch, the pitch rises; let go, it's back.
 | LED | Lights while an octave is engaged. |
 
 Tips:
-- Hover a knob to see its value; **double-click** resets it. CHILL, ORDER and SLOTH start at 12 o'clock.
+- Hover a knob to see its value; **double-click** resets it. DETUNE, RUIN and RING start at 12 o'clock.
 - The window can be resized from the corner; its size is remembered with your project.
 
 ## Presets
@@ -42,8 +44,8 @@ loading it.
 - **‹ ›** step through the presets.
 - **Click the display** for the menu: all presets, **Save Preset…**, **Delete**, **Show Presets Folder**.
 - Nine factory presets are built in and also appear as the plugin's programs in your DAW.
-- Your presets are files in `~/Library/Application Support/The Calm/Presets` (macOS) or
-  `%APPDATA%\The Calm\Presets` (Windows), so they are easy to back up and share.
+- Your presets are files in `~/Library/Application Support/Die Noise/Presets` (macOS) or
+  `%APPDATA%\Die Noise\Presets` (Windows), so they are easy to back up and share.
 - Presets store the sound only: footswitch states, Latch and Mono/Stereo are left as they are.
 
 ## MIDI control
@@ -63,12 +65,12 @@ Assignments are saved with your project. In your DAW, route MIDI to the track wi
 
 Download the installer for your system from the Releases page.
 
-- **macOS** — `TheCalm-<version>-macOS.pkg`. Click **Customize** to choose formats. The installer is not
+- **macOS** — `DieNoise-<version>-macOS.pkg`. Click **Customize** to choose formats. The installer is not
   signed: if macOS blocks it, open **System Settings → Privacy & Security** and click **Open Anyway**.
-- **Windows** — `TheCalm-<version>-Windows.exe`. Choose VST3 and/or CLAP. Plugins go to
+- **Windows** — `DieNoise-<version>-Windows.exe`. Choose VST3 and/or CLAP. Plugins go to
   `C:\Program Files\Common Files\VST3` and `…\CLAP`.
 
-Rescan plug-ins in your DAW if The Calm doesn't show up.
+Rescan plug-ins in your DAW if Die Noise doesn't show up.
 
 ---
 
@@ -89,8 +91,8 @@ when testing an installed build, so hosts don't list The Calm twice.
 Installers:
 
 ```bash
-tools/make_installer_mac.sh                                            # dist/TheCalm-<version>-macOS.pkg
-powershell -ExecutionPolicy Bypass -File tools\make_installer_win.ps1  # dist\TheCalm-<version>-Windows.exe
+tools/make_installer_mac.sh                                            # dist/DieNoise-<version>-macOS.pkg
+powershell -ExecutionPolicy Bypass -File tools\make_installer_win.ps1  # dist\DieNoise-<version>-Windows.exe
 ```
 
 The Windows script builds x64 plugins and needs [Inno Setup](https://jrsoftware.org/isinfo.php) 7.
@@ -110,7 +112,7 @@ The Windows script builds x64 plugins and needs [Inno Setup](https://jrsoftware.
 
 - `calm_tests` — MIDI Learn, presets, defaults, editor size (`build/calm_tests_artefacts/Release/calm_tests`).
 - `calm_stress` — CPU table and a randomized torture test (automation, presets, block sizes, sample rates).
-- `ui_snapshot` — renders the UI to PNG without a host: `ui_snapshot out.png 600 preset="Nap Time" octave1=1`.
+- `ui_snapshot` — renders the UI to PNG without a host: `ui_snapshot out.png 600 preset="Low Burn" octave1=1`.
 - `calm_render` — runs the DSP core offline on WAV files.
 - `tools/*.py` — test signals, capture matrices through any plugin (via
   [pedalboard](https://github.com/spotify/pedalboard)), and analysis/A-B comparison of pitch, rise,
@@ -118,14 +120,16 @@ The Windows script builds x64 plugins and needs [Inno Setup](https://jrsoftware.
 
 ## License
 
-Copyright © 2026 BetaRabbit.
+Die Noise is based on **The Calm**, Copyright © 2026 BetaRabbit, and, like it, is free software under the
+**GNU Affero General Public License v3.0** (see [LICENSE](LICENSE)). It is distributed in the hope that it will be
+useful, but WITHOUT ANY WARRANTY.
 
-The Calm is free software: you can redistribute it and/or modify it under the terms of the
-**GNU Affero General Public License v3.0** as published by the Free Software Foundation. It is
-distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; see [LICENSE](LICENSE).
+Changes made by Kings Die Here (2026): new name, new artwork and layout (`Resources/`, `Source/SkinLayout.h`,
+`tools/make_skin_die_noise.py`), red pointers, new preset names, renamed controls (Detune, Ruin, Ring) and
+a redrawn toggle, meters and LED. The DSP core (`Source/dsp/NoiseEngine.h`) is unchanged.
 
 Third-party components keep their own licences: JUCE (AGPLv3 / commercial), clap-juce-extensions and
-the CLAP SDK (MIT), the VST3 SDK (MIT).
+the CLAP SDK (MIT), the VST3 SDK (MIT). The artwork in `Resources/` belongs to Kings Die Here / its authors and
+is not covered by the AGPL unless stated otherwise.
 
-Built with [JUCE](https://juce.com) and [clap-juce-extensions](https://github.com/free-audio/clap-juce-extensions).
 VST is a registered trademark of Steinberg Media Technologies GmbH.

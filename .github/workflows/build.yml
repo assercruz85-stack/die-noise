@@ -23,6 +23,15 @@ jobs:
       - name: Build
         run: cmake --build build --config Release --target TheCalm_VST3 TheCalm_CLAP
 
+      - name: UI snapshot (macOS)
+        if: runner.os == 'macOS'
+        continue-on-error: true
+        run: |
+          cmake --build build --config Release --target ui_snapshot
+          S=$(find build -type f -name ui_snapshot -perm -u+x | head -1)
+          "$S" ui.png 1024 || true
+          "$S" ui_on.png 1024 octave1=1 || true
+
       - name: Collect (macOS)
         if: runner.os == 'macOS'
         run: |
@@ -44,3 +53,10 @@ jobs:
         with:
           name: plugin-${{ runner.os }}
           path: plugin-*.zip
+
+      - uses: actions/upload-artifact@v4
+        if: runner.os == 'macOS'
+        continue-on-error: true
+        with:
+          name: ui-snapshot
+          path: ui*.png

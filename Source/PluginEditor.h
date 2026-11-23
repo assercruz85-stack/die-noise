@@ -3,7 +3,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "PluginProcessor.h"
 
-// Look and feel of The Calm: a white, soft, sleepy take on a stompbox.
+// Look and feel of Die Noise (based on The Calm by BetaRabbit, AGPL-3.0).
 namespace CalmUI
 {
 juce::Font font (float height, bool bold = false);

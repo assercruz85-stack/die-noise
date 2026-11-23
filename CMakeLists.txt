@@ -22,11 +22,11 @@ add_subdirectory(libs/JUCE)
 add_subdirectory(libs/clap-juce-extensions EXCLUDE_FROM_ALL)
 
 juce_add_plugin(TheCalm
-    COMPANY_NAME "BetaRabbit"
-    PRODUCT_NAME "The Calm"
-    BUNDLE_ID "com.betarabbit.thecalm"
-    PLUGIN_MANUFACTURER_CODE Btrb
-    PLUGIN_CODE Tclm
+    COMPANY_NAME "Kings Die Here"
+    PRODUCT_NAME "Die Noise"
+    BUNDLE_ID "com.kingsdiehere.dienoise"
+    PLUGIN_MANUFACTURER_CODE Kdhr
+    PLUGIN_CODE Dnoi
     FORMATS VST3 AU
     IS_SYNTH FALSE
     NEEDS_MIDI_INPUT TRUE
@@ -38,14 +38,14 @@ juce_add_plugin(TheCalm
     AU_MAIN_TYPE kAudioUnitType_MusicEffect)
 
 clap_juce_extensions_plugin(TARGET TheCalm
-    CLAP_ID "com.betarabbit.thecalm"
+    CLAP_ID "com.kingsdiehere.dienoise"
     CLAP_FEATURES audio-effect pitch-shifter distortion)
 
 # The copy above replaces files inside the installed bundle but leaves the bundle folder's date alone,
 # and hosts such as REAPER only rescan a CLAP when that date changes. Touch it after every install.
 if(APPLE)
     add_custom_command(TARGET TheCalm_CLAP POST_BUILD
-        COMMAND touch "$ENV{HOME}/Library/Audio/Plug-Ins/CLAP/The Calm.clap"
+        COMMAND touch "$ENV{HOME}/Library/Audio/Plug-Ins/CLAP/Die Noise.clap"
         VERBATIM)
 endif()
 
@@ -82,7 +82,7 @@ target_link_libraries(TheCalm
 juce_add_console_app(ui_snapshot PRODUCT_NAME "ui_snapshot")
 target_sources(ui_snapshot PRIVATE tools/ui_snapshot.cpp Source/PluginProcessor.cpp Source/PluginEditor.cpp Source/PresetManager.cpp Source/MidiLearn.cpp)
 target_include_directories(ui_snapshot PRIVATE Source)
-target_compile_definitions(ui_snapshot PRIVATE JucePlugin_Name="The Calm" JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_compile_definitions(ui_snapshot PRIVATE JucePlugin_Name="Die Noise" JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
 target_link_libraries(ui_snapshot PRIVATE juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
 if(TARGET TheCalmAssets)
     target_link_libraries(ui_snapshot PRIVATE TheCalmAssets)
@@ -93,7 +93,7 @@ endif()
 juce_add_console_app(calm_tests PRODUCT_NAME "calm_tests")
 target_sources(calm_tests PRIVATE tools/calm_tests.cpp Source/PluginProcessor.cpp Source/PluginEditor.cpp Source/PresetManager.cpp Source/MidiLearn.cpp)
 target_include_directories(calm_tests PRIVATE Source)
-target_compile_definitions(calm_tests PRIVATE JucePlugin_Name="The Calm" JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_compile_definitions(calm_tests PRIVATE JucePlugin_Name="Die Noise" JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
 target_link_libraries(calm_tests PRIVATE juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
 if(TARGET TheCalmAssets)
     target_link_libraries(calm_tests PRIVATE TheCalmAssets)
@@ -104,7 +104,7 @@ endif()
 juce_add_console_app(calm_stress PRODUCT_NAME "calm_stress")
 target_sources(calm_stress PRIVATE tools/calm_stress.cpp Source/PluginProcessor.cpp Source/PluginEditor.cpp Source/PresetManager.cpp Source/MidiLearn.cpp)
 target_include_directories(calm_stress PRIVATE Source)
-target_compile_definitions(calm_stress PRIVATE JucePlugin_Name="The Calm" JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
+target_compile_definitions(calm_stress PRIVATE JucePlugin_Name="Die Noise" JUCE_WEB_BROWSER=0 JUCE_USE_CURL=0)
 target_link_libraries(calm_stress PRIVATE juce::juce_audio_utils juce::juce_dsp juce::juce_recommended_config_flags)
 if(TARGET TheCalmAssets)
     target_link_libraries(calm_stress PRIVATE TheCalmAssets)

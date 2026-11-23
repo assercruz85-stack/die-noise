@@ -16,14 +16,14 @@ const std::vector<PresetManager::Factory>& PresetManager::factoryPresets()
     using namespace ParamIDs;
     static const std::vector<Factory> presets {
         { "Default", {} },
-        { "Clean Up", { { panic, 0.0f }, { chaos, 0.0f }, { speed, 0.0f } } },
-        { "Nap Time", { { panic, 0.2f }, { chaos, 0.1f }, { speed, 0.3f }, { rise, 400.0f } } },
-        { "Slow Morning", { { panic, 0.0f }, { chaos, 0.0f }, { speed, 0.0f }, { rise, 900.0f } } },
-        { "Sloth Mode", { { panic, 0.0f }, { chaos, 0.3f }, { speed, 1.0f }, { rise, 150.0f } } },
-        { "Overthinking", { { panic, 1.0f }, { chaos, 0.4f }, { speed, 0.0f } } },
-        { "Half Asleep", { { panic, 0.3f }, { chaos, 0.2f }, { speed, 0.4f }, { blend, 0.5f } } },
+        { "Clean Octave", { { panic, 0.0f }, { chaos, 0.0f }, { speed, 0.0f } } },
+        { "Low Burn", { { panic, 0.2f }, { chaos, 0.1f }, { speed, 0.3f }, { rise, 400.0f } } },
+        { "Slow Rise", { { panic, 0.0f }, { chaos, 0.0f }, { speed, 0.0f }, { rise, 900.0f } } },
+        { "Ring Out", { { panic, 0.0f }, { chaos, 0.3f }, { speed, 1.0f }, { rise, 150.0f } } },
+        { "Detuned", { { panic, 1.0f }, { chaos, 0.4f }, { speed, 0.0f } } },
+        { "Half Dead", { { panic, 0.3f }, { chaos, 0.2f }, { speed, 0.4f }, { blend, 0.5f } } },
         { "On The Beat", { { panic, 0.0f }, { chaos, 0.0f }, { speed, 0.0f }, { riseSync, 1.0f }, { riseDiv, 3.0f } } },
-        { "Total Calm", { { panic, 1.0f }, { chaos, 1.0f }, { speed, 1.0f } } },
+        { "Die Noise", { { panic, 1.0f }, { chaos, 1.0f }, { speed, 1.0f } } },
     };
     return presets;
 }
@@ -34,7 +34,7 @@ juce::File PresetManager::userFolder()
 #if JUCE_MAC
         .getChildFile ("Application Support")
 #endif
-        .getChildFile ("The Calm")
+        .getChildFile ("Die Noise")
         .getChildFile ("Presets");
 }
 

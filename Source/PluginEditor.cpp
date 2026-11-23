@@ -181,9 +181,10 @@ void Knob::paintSkinned (juce::Graphics& g, juce::Rectangle<float> bounds, float
         g.setColour (colour);
         g.strokePath (p, juce::PathStrokeType (strokeWidth, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
     };
-    stroke (juce::Colours::white.withAlpha (0.45f), width * 1.45f, { 0.0f, width * 0.35f });
-    stroke (juce::Colour (0xff2a2622), width, {});
-    stroke (juce::Colours::black.withAlpha (0.35f), width * 0.5f, { 0.0f, -width * 0.2f });
+    // Die Noise: a red painted line, with a soft dark edge and a thin highlight.
+    stroke (juce::Colours::black.withAlpha (0.55f), width * 1.35f, { width * 0.18f, width * 0.22f });
+    stroke (juce::Colour (0xffe21c15), width, {});
+    stroke (juce::Colour (0xffff7a6a).withAlpha (0.55f), width * 0.3f, { -width * 0.15f, -width * 0.15f });
 }
 
 void Knob::Dial::paint (juce::Graphics& g)
@@ -475,7 +476,7 @@ void PresetBar::paint (juce::Graphics& g)
         // A little display: warm light lettering, centred.
         const auto area = window.reduced (window.getWidth() * 0.05f, window.getHeight() * 0.1f);
         g.setFont (juce::Font (juce::FontOptions ("Avenir Next", area.getHeight() * 0.62f, juce::Font::bold)));
-        g.setColour (juce::Colour (0xfff3e6c8).withAlpha (hover && window.contains (mouse) ? 1.0f : 0.92f));
+        g.setColour (juce::Colour (0xffff3b30).withAlpha (hover && window.contains (mouse) ? 1.0f : 0.92f));
         g.drawFittedText (text, area.toNearestInt(), juce::Justification::centred, 1, 0.8f);
         return;
     }
@@ -601,15 +602,23 @@ void PillSwitch::paint (juce::Graphics& g)
     const bool stereoOn = param.getValue() > 0.5f;
     if (skinned)
     {
-        const auto b = getLocalBounds().toFloat();
-        if (! stereoOn && skinImage.isValid())
-        {
-            // Mono: mirror the toggle about the housing's own axis - the housing maps onto itself and
-            // only the lever changes sides.
-            const float k = b.getWidth() / skinSource.getWidth();
-            const auto toLocal = juce::AffineTransform::translation (-skinSource.getX(), -skinSource.getY()).scaled (k);
-            g.drawImageTransformed (skinImage, juce::AffineTransform::scale (-1.0f, 1.0f, SkinLayout::toggleMirrorX, 0.0f).followedBy (toLocal));
-        }
+        // Die Noise: a small recessed slot with a chrome ball, left = Mono, right = Stereo.
+        const auto b = getLocalBounds().toFloat().reduced (1.0f);
+        const float h = b.getHeight();
+        g.setColour (juce::Colour (0xff050506));
+        g.fillRoundedRectangle (b, h * 0.5f);
+        g.setColour (juce::Colour (0xff5a5a5e));
+        g.drawRoundedRectangle (b, h * 0.5f, juce::jmax (1.0f, h * 0.06f));
+        g.setColour (juce::Colours::black.withAlpha (0.6f));
+        g.drawRoundedRectangle (b.reduced (h * 0.06f), h * 0.45f, juce::jmax (1.0f, h * 0.08f));
+        const float r = h * 0.34f;
+        const float x = stereoOn ? b.getRight() - h * 0.5f : b.getX() + h * 0.5f;
+        const juce::Point<float> c (x, b.getCentreY());
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xfff2f2f4), c.translated (-r * 0.4f, -r * 0.5f),
+                                                 juce::Colour (0xff6a6a70), c.translated (r, r), true));
+        g.fillEllipse (juce::Rectangle<float> (r * 2.0f, r * 2.0f).withCentre (c));
+        g.setColour (juce::Colours::black.withAlpha (0.45f));
+        g.drawEllipse (juce::Rectangle<float> (r * 2.0f, r * 2.0f).withCentre (c), juce::jmax (1.0f, h * 0.05f));
         if (learning)
         {
             g.setColour (juce::Colour (0xffff1f3d));
@@ -882,21 +891,20 @@ void TheCalmEditor::paintMeters (juce::Graphics& g)
         const int lit = juce::jlimit (0, lamps, (int) std::ceil ((levels[m] - floorDb) / -floorDb * (float) lamps));
         const auto& col = columns[m];
         const float cx = 0.5f * (col.x0 + col.x1);
-        for (int i = lit; i < lamps; ++i)
+        // Die Noise: the artwork has all lamps dark; the lit ones are drawn here, from the bottom up.
+        for (int i = 0; i < lit; ++i)
         {
             const float y = SkinLayout::meterLampY[lamps - 1 - i];
-            const auto lampColour = skin.getPixelAt (juce::roundToInt (cx), juce::roundToInt (y));
-            // Cover the lit lamp and its glow with the housing, then a dim lamp.
-            const auto cell = juce::Rectangle<float>::leftTopRightBottom (col.x0 - 3.0f, y - 11.0f, col.x1 + 3.0f, y + 11.0f)
-                                  .transformedBy (juce::AffineTransform::scale (k));
-            g.setColour (juce::Colour (0xff1c1b19));
-            g.fillRoundedRectangle (cell, 3.0f * k);
-            const auto lamp = juce::Rectangle<float>::leftTopRightBottom (col.x0, y - 8.0f, col.x1, y + 8.0f)
-                                  .transformedBy (juce::AffineTransform::scale (k));
-            g.setColour (lampColour.darker (2.2f).withMultipliedSaturation (0.7f));
-            g.fillRoundedRectangle (lamp, 2.5f * k);
-            g.setColour (juce::Colours::white.withAlpha (0.07f));
-            g.fillRoundedRectangle (lamp.withHeight (lamp.getHeight() * 0.4f).reduced (lamp.getWidth() * 0.12f, 0.0f), 2.0f * k);
+            const float hot = (float) i / (float) (lamps - 1); // the top lamps are the hottest
+            const auto colour = juce::Colour (0xffe21c15).interpolatedWith (juce::Colour (0xffff5a3c), hot);
+            const juce::Point<float> c (cx * k, y * k);
+            const float r = 9.0f * k;
+            g.setColour (colour.withAlpha (0.25f));
+            g.fillEllipse (juce::Rectangle<float> (r * 3.2f, r * 3.2f).withCentre (c));
+            g.setColour (colour);
+            g.fillEllipse (juce::Rectangle<float> (r * 2.0f, r * 2.0f).withCentre (c));
+            g.setColour (juce::Colours::white.withAlpha (0.35f));
+            g.fillEllipse (juce::Rectangle<float> (r * 0.8f, r * 0.55f).withCentre (c.translated (-r * 0.25f, -r * 0.35f)));
         }
     }
 }
@@ -915,24 +923,28 @@ void TheCalmEditor::paintSkin (juce::Graphics& g)
     g.drawImage (skin, getLocalBounds().toFloat(), juce::RectanglePlacement::stretchToFit);
     paintMeters (g);
 
-    // Status LED: painted lit; when the effect is off, cover the lens with dark amber glass.
+    // Status LED: a red lens over the artwork's bezel, dark when the effect is off, lit when an octave is on.
     const juce::Point<float> c (SkinLayout::led.cx * k, SkinLayout::led.cy * k);
-    const float lensR = SkinLayout::led.radius * 0.8f * k; // the glass; a thin orange rim stays visible
+    const float lensR = SkinLayout::led.radius * 0.8f * k;
     const auto lens = juce::Rectangle<float> (lensR * 2.0f, lensR * 2.0f).withCentre (c);
     if (ledOn)
     {
-        g.setColour (juce::Colour (0xffffc542).withAlpha (0.22f));
-        g.fillEllipse (lens.expanded (lensR * 0.7f));
+        for (int i = 3; i >= 1; --i)
+        {
+            g.setColour (juce::Colour (0xffff2a1e).withAlpha (0.10f * (float) (4 - i)));
+            g.fillEllipse (lens.expanded (lensR * 0.55f * (float) i));
+        }
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xffff7a66), c.translated (-lensR * 0.3f, -lensR * 0.3f),
+                                                 juce::Colour (0xffc4140d), c.translated (lensR, lensR), true));
     }
     else
     {
-        // Off: dark amber glass with a small highlight.
-        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff6e4a14), c.translated (-lensR * 0.3f, -lensR * 0.3f),
-                                                 juce::Colour (0xff2e1d08), c.translated (lensR, lensR), true));
-        g.fillEllipse (lens);
-        g.setColour (juce::Colours::white.withAlpha (0.28f));
-        g.fillEllipse (juce::Rectangle<float> (lensR * 0.7f, lensR * 0.45f).withCentre (c.translated (-lensR * 0.25f, -lensR * 0.45f)));
+        g.setGradientFill (juce::ColourGradient (juce::Colour (0xff5a1410), c.translated (-lensR * 0.3f, -lensR * 0.3f),
+                                                 juce::Colour (0xff1e0605), c.translated (lensR, lensR), true));
     }
+    g.fillEllipse (lens);
+    g.setColour (juce::Colours::white.withAlpha (ledOn ? 0.45f : 0.2f));
+    g.fillEllipse (juce::Rectangle<float> (lensR * 0.7f, lensR * 0.45f).withCentre (c.translated (-lensR * 0.25f, -lensR * 0.45f)));
 }
 
 void TheCalmEditor::paintVector (juce::Graphics& g)
@@ -1071,11 +1083,11 @@ void TheCalmEditor::resized()
         placeSwitch (up, SkinLayout::upSwitch, SkinLayout::upSwitchAxis);
         placeSwitch (wayUp, SkinLayout::wayUpSwitch, SkinLayout::wayUpSwitchAxis);
         // Top: just above the cap's highlight; bottom: just below its bevel (measured along each axis).
-        up.maskTop = 1235.0f;
-        up.maskBottomLeftExtra = 2.5f;
-        up.maskBottom = 1351.5f;
-        wayUp.maskTop = 1235.0f;
-        wayUp.maskBottom = 1351.5f;
+        up.maskTop = SkinLayout::upSwitch.cy - maskRadius;
+        up.maskBottomLeftExtra = 0.0f;
+        up.maskBottom = SkinLayout::upSwitch.cy + maskRadius;
+        wayUp.maskTop = SkinLayout::wayUpSwitch.cy - maskRadius;
+        wayUp.maskBottom = SkinLayout::wayUpSwitch.cy + maskRadius;
 
         const auto toggle = juce::Rectangle<float>::leftTopRightBottom (SkinLayout::toggle.x0, SkinLayout::toggle.y0,
                                                                        SkinLayout::toggle.x1, SkinLayout::toggle.y1)
