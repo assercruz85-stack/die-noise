@@ -8,7 +8,9 @@ Die Noise shifts your guitar up one or two octaves with a grainy, slightly broke
 you detune it, scramble it and turn it into a resonant mess. It is built for momentary, foot-pressed
 octave jumps: hold a switch, the pitch rises; let go, it's back.
 
-<p align="center"><img src="docs/screenshot.png" alt="Die Noise" width="320"></p>
+<p align="center"><img src="docs/cover.jpg" alt="Die Noise pedal" width="560"></p>
+
+<p align="center"><img src="docs/screenshot.png" alt="Die Noise plugin interface" width="320"></p>
 
 - Formats: **VST3, AU, CLAP** on macOS (Apple Silicon and Intel, macOS 11+);
   **VST3 and CLAP** on Windows (x64; on Windows on ARM they run in x64 and ARM64EC hosts such as REAPER).
