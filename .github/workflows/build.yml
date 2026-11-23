@@ -49,6 +49,36 @@ jobs:
           Get-ChildItem -Path build -Recurse -Filter *.clap -File | Copy-Item -Destination dist
           Compress-Archive -Path dist\* -DestinationPath plugin-windows.zip
 
+      - name: Installer (macOS)
+        if: runner.os == 'macOS'
+        continue-on-error: true
+        run: zsh tools/make_installer_mac.sh
+
+      - name: Installer (Windows)
+        if: runner.os == 'Windows'
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          $iscc = (Get-Command iscc -ErrorAction SilentlyContinue).Source
+          if (-not $iscc) { $iscc = (Get-ChildItem "C:\Program Files*\Inno Setup*\ISCC.exe" | Select-Object -First 1).FullName }
+          if (-not $iscc) { choco install innosetup -y --no-progress; $iscc = (Get-ChildItem "C:\Program Files*\Inno Setup*\ISCC.exe" | Select-Object -First 1).FullName }
+          $stage = "$PWD\stage"
+          New-Item -ItemType Directory -Force "$stage\VST3", "$stage\CLAP" | Out-Null
+          Copy-Item -Recurse "build\TheCalm_artefacts\Release\VST3\Die Noise.vst3" "$stage\VST3\"
+          Copy-Item "build\TheCalm_artefacts\Release\CLAP\Die Noise.clap" "$stage\CLAP\"
+          New-Item -ItemType Directory -Force dist | Out-Null
+          & $iscc /Qp "/DAppVersion=1.0" "/DStage=$stage" installer\TheCalm.iss
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed" }
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        continue-on-error: true
+        with:
+          name: installer-${{ runner.os }}
+          path: |
+            dist/*.pkg
+            dist/*.exe
+
       - uses: actions/upload-artifact@v4
         with:
           name: plugin-${{ runner.os }}
