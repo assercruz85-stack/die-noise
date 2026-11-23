@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Builds dist/TheCalm-<version>-macOS.pkg: an unsigned installer where the user picks the formats
+# Builds dist/DieNoise-<version>-macOS.pkg: an unsigned installer where the user picks the formats
 # (AU, VST3, CLAP).
 #
 #   tools/make_installer_mac.sh
@@ -18,7 +18,7 @@ cmake --build build --config Release -j8 --target TheCalm_AU TheCalm_VST3 TheCal
 
 ARTEFACTS=build/TheCalm_artefacts/Release
 WORK=build/installer
-OUT=dist/TheCalm-$VERSION-macOS.pkg
+OUT=dist/DieNoise-$VERSION-macOS.pkg
 rm -rf "$WORK"
 mkdir -p "$WORK/packages" dist
 
@@ -38,7 +38,7 @@ for entry in $COMPONENTS; do
     pkgbuild --analyze --root "$stage" "$WORK/$id.plist" >/dev/null
     plutil -replace 0.BundleIsRelocatable -bool NO "$WORK/$id.plist"
     pkgbuild --root "$stage" --component-plist "$WORK/$id.plist" \
-             --identifier "com.kingsdiehere.thecalm.$id" --version "$VERSION" \
+             --identifier "com.kingsdiehere.dienoise.$id" --version "$VERSION" \
              --install-location "$location" "$WORK/packages/$id.pkg" >/dev/null
 done
 
@@ -56,25 +56,25 @@ cat > "$WORK/distribution.xml" <<EOF
         <line choice="clap"/>
     </choices-outline>
     <choice id="au" title="AU" description="Installs to /Library/Audio/Plug-Ins/Components." start_selected="true">
-        <pkg-ref id="com.kingsdiehere.thecalm.au"/>
+        <pkg-ref id="com.kingsdiehere.dienoise.au"/>
     </choice>
     <choice id="vst3" title="VST3" description="Installs to /Library/Audio/Plug-Ins/VST3." start_selected="true">
-        <pkg-ref id="com.kingsdiehere.thecalm.vst3"/>
+        <pkg-ref id="com.kingsdiehere.dienoise.vst3"/>
     </choice>
     <choice id="clap" title="CLAP" description="Installs to /Library/Audio/Plug-Ins/CLAP." start_selected="true">
-        <pkg-ref id="com.kingsdiehere.thecalm.clap"/>
+        <pkg-ref id="com.kingsdiehere.dienoise.clap"/>
     </choice>
-    <pkg-ref id="com.kingsdiehere.thecalm.au" version="$VERSION">au.pkg</pkg-ref>
-    <pkg-ref id="com.kingsdiehere.thecalm.vst3" version="$VERSION">vst3.pkg</pkg-ref>
-    <pkg-ref id="com.kingsdiehere.thecalm.clap" version="$VERSION">clap.pkg</pkg-ref>
+    <pkg-ref id="com.kingsdiehere.dienoise.au" version="$VERSION">au.pkg</pkg-ref>
+    <pkg-ref id="com.kingsdiehere.dienoise.vst3" version="$VERSION">vst3.pkg</pkg-ref>
+    <pkg-ref id="com.kingsdiehere.dienoise.clap" version="$VERSION">clap.pkg</pkg-ref>
 </installer-gui-script>
 EOF
 
 mkdir -p "$WORK/resources"
 cat > "$WORK/resources/welcome.txt" <<EOF
-Die Noise $VERSION by Kings Die Here (unknown x kingsdiehere)
+Die Noise $VERSION by Kings Die Here
 
-An octave pedal that ruins everything, calmly.
+An octave pedal that ruins everything.
 
 Click "Customize" on the next step to choose which formats to install.
 After installing, rescan plug-ins in your DAW if Die Noise does not show up.

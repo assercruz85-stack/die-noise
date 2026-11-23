@@ -1,4 +1,4 @@
-# Builds dist\TheCalm-<version>-Windows.exe: x64 VST3 and CLAP (they also run on Windows on ARM in
+# Builds dist\DieNoise-<version>-Windows.exe: x64 VST3 and CLAP (they also run on Windows on ARM in
 # x64 and ARM64EC hosts).
 #   powershell -ExecutionPolicy Bypass -File tools\make_installer_win.ps1
 $ErrorActionPreference = "Stop"
@@ -24,4 +24,4 @@ Copy-Item "build-x64\TheCalm_artefacts\Release\CLAP\Die Noise.clap" "$stage\CLAP
 New-Item -ItemType Directory -Force dist | Out-Null
 & "C:\Program Files\Inno Setup 7\ISCC.exe" /Qp "/DAppVersion=$version" "/DStage=$root\$stage" installer\TheCalm.iss
 if ($LASTEXITCODE -ne 0) { throw "ISCC failed" }
-Get-Item "dist\TheCalm-$version-Windows.exe"
+Get-Item "dist\DieNoise-$version-Windows.exe"

@@ -17,7 +17,7 @@ DefaultDirName={commoncf64}\Kings Die Here\Die Noise
 DisableDirPage=yes
 DisableProgramGroupPage=yes
 OutputDir=..\dist
-OutputBaseFilename=TheCalm-{#AppVersion}-Windows
+OutputBaseFilename=DieNoise-{#AppVersion}-Windows
 Compression=lzma2/max
 SolidCompression=yes
 ; x64 plugins also run on Windows on ARM in x64 and ARM64EC hosts (e.g. REAPER for ARM).
