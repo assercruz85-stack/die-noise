@@ -24,9 +24,9 @@ mkdir -p "$WORK/packages" dist
 
 # id | artefact | install location
 COMPONENTS=(
-    "au|AU/The Calm.component|/Library/Audio/Plug-Ins/Components"
-    "vst3|VST3/The Calm.vst3|/Library/Audio/Plug-Ins/VST3"
-    "clap|CLAP/The Calm.clap|/Library/Audio/Plug-Ins/CLAP"
+    "au|AU/Die Noise.component|/Library/Audio/Plug-Ins/Components"
+    "vst3|VST3/Die Noise.vst3|/Library/Audio/Plug-Ins/VST3"
+    "clap|CLAP/Die Noise.clap|/Library/Audio/Plug-Ins/CLAP"
 )
 
 for entry in $COMPONENTS; do
@@ -38,15 +38,15 @@ for entry in $COMPONENTS; do
     pkgbuild --analyze --root "$stage" "$WORK/$id.plist" >/dev/null
     plutil -replace 0.BundleIsRelocatable -bool NO "$WORK/$id.plist"
     pkgbuild --root "$stage" --component-plist "$WORK/$id.plist" \
-             --identifier "com.betarabbit.thecalm.$id" --version "$VERSION" \
+             --identifier "com.kingsdiehere.thecalm.$id" --version "$VERSION" \
              --install-location "$location" "$WORK/packages/$id.pkg" >/dev/null
 done
 
 cat > "$WORK/distribution.xml" <<EOF
 <?xml version="1.0" encoding="utf-8"?>
 <installer-gui-script minSpecVersion="2">
-    <title>The Calm $VERSION</title>
-    <organization>com.betarabbit</organization>
+    <title>Die Noise $VERSION</title>
+    <organization>com.kingsdiehere</organization>
     <domains enable_localSystem="true"/>
     <options customize="always" require-scripts="false" hostArchitectures="arm64,x86_64"/>
     <welcome file="welcome.txt" mime-type="text/plain"/>
@@ -56,28 +56,28 @@ cat > "$WORK/distribution.xml" <<EOF
         <line choice="clap"/>
     </choices-outline>
     <choice id="au" title="AU" description="Installs to /Library/Audio/Plug-Ins/Components." start_selected="true">
-        <pkg-ref id="com.betarabbit.thecalm.au"/>
+        <pkg-ref id="com.kingsdiehere.thecalm.au"/>
     </choice>
     <choice id="vst3" title="VST3" description="Installs to /Library/Audio/Plug-Ins/VST3." start_selected="true">
-        <pkg-ref id="com.betarabbit.thecalm.vst3"/>
+        <pkg-ref id="com.kingsdiehere.thecalm.vst3"/>
     </choice>
     <choice id="clap" title="CLAP" description="Installs to /Library/Audio/Plug-Ins/CLAP." start_selected="true">
-        <pkg-ref id="com.betarabbit.thecalm.clap"/>
+        <pkg-ref id="com.kingsdiehere.thecalm.clap"/>
     </choice>
-    <pkg-ref id="com.betarabbit.thecalm.au" version="$VERSION">au.pkg</pkg-ref>
-    <pkg-ref id="com.betarabbit.thecalm.vst3" version="$VERSION">vst3.pkg</pkg-ref>
-    <pkg-ref id="com.betarabbit.thecalm.clap" version="$VERSION">clap.pkg</pkg-ref>
+    <pkg-ref id="com.kingsdiehere.thecalm.au" version="$VERSION">au.pkg</pkg-ref>
+    <pkg-ref id="com.kingsdiehere.thecalm.vst3" version="$VERSION">vst3.pkg</pkg-ref>
+    <pkg-ref id="com.kingsdiehere.thecalm.clap" version="$VERSION">clap.pkg</pkg-ref>
 </installer-gui-script>
 EOF
 
 mkdir -p "$WORK/resources"
 cat > "$WORK/resources/welcome.txt" <<EOF
-The Calm $VERSION by BetaRabbit (unknown x betarabbit)
+Die Noise $VERSION by Kings Die Here (unknown x kingsdiehere)
 
 An octave pedal that ruins everything, calmly.
 
 Click "Customize" on the next step to choose which formats to install.
-After installing, rescan plug-ins in your DAW if The Calm does not show up.
+After installing, rescan plug-ins in your DAW if Die Noise does not show up.
 
 This installer is not signed by Apple. If macOS blocks it, open
 System Settings > Privacy & Security and click "Open Anyway".

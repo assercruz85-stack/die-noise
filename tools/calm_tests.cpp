@@ -116,16 +116,16 @@ int main()
            "MIDI map (CCs and notes) restored with the project");
 
     // Presets
-    check (p.presets.load ("Sloth Mode") && std::abs (plain (p, ParamIDs::speed) - 1.0f) < 1e-4f, "factory preset loads");
+    check (p.presets.load ("Ring Out") && std::abs (plain (p, ParamIDs::speed) - 1.0f) < 1e-4f, "factory preset loads");
     check (! p.presets.isModified(), "freshly loaded preset is not modified");
     p.state.getParameter (ParamIDs::panic)->setValueNotifyingHost (0.9f);
     check (p.presets.isModified(), "moving a knob marks the preset modified");
     p.state.getParameter (ParamIDs::stereo)->setValueNotifyingHost (1.0f);
-    p.presets.load ("Overthinking");
+    p.presets.load ("Detuned");
     check (plain (p, ParamIDs::stereo) > 0.5f, "mono/stereo is left alone by presets");
     check (! p.presets.isModified(), "mono/stereo does not mark a preset modified");
     p.setCurrentProgram (1);
-    check (p.presets.currentName() == "Clean Up" && p.getCurrentProgram() == 1, "host programs map to factory presets");
+    check (p.presets.currentName() == "Clean Octave" && p.getCurrentProgram() == 1, "host programs map to factory presets");
 
     // Editor size is remembered with the project
     {

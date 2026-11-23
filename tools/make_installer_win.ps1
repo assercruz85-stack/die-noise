@@ -18,8 +18,8 @@ foreach ($arch in @("x64")) {
 $stage = "build-win\stage"
 Remove-Item -Recurse -Force $stage -ErrorAction SilentlyContinue
 New-Item -ItemType Directory -Force "$stage\VST3", "$stage\CLAP" | Out-Null
-Copy-Item -Recurse "build-x64\TheCalm_artefacts\Release\VST3\The Calm.vst3" "$stage\VST3\The Calm.vst3"
-Copy-Item "build-x64\TheCalm_artefacts\Release\CLAP\The Calm.clap" "$stage\CLAP\"
+Copy-Item -Recurse "build-x64\TheCalm_artefacts\Release\VST3\Die Noise.vst3" "$stage\VST3\Die Noise.vst3"
+Copy-Item "build-x64\TheCalm_artefacts\Release\CLAP\Die Noise.clap" "$stage\CLAP\"
 
 New-Item -ItemType Directory -Force dist | Out-Null
 & "C:\Program Files\Inno Setup 7\ISCC.exe" /Qp "/DAppVersion=$version" "/DStage=$root\$stage" installer\TheCalm.iss
