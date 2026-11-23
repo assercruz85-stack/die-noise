@@ -58,7 +58,7 @@ footswitch.
 3. Right-click → **Clear MIDI** removes it.
 
 Footswitches react to CC values ≥ 64 or note-on as "pressed"; in Latch mode each press toggles.
-Assignments are saved with your project. In your DAW, route MIDI to the track with The Calm
+Assignments are saved with your project. In your DAW, route MIDI to the track with Die Noise
 (Logic: choose the MIDI source in the plugin window's header).
 
 ## Installing
@@ -86,7 +86,7 @@ cmake --build build --config Release
 ```
 
 On macOS, development builds also copy the plugins to `~/Library/Audio/Plug-Ins`. Remove those copies
-when testing an installed build, so hosts don't list The Calm twice.
+when testing an installed build, so hosts don't list Die Noise twice.
 
 Installers:
 
