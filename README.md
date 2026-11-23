@@ -23,7 +23,7 @@ octave jumps: hold a switch, the pitch rises; let go, it's back.
 | **RISE** | How long the pitch takes to glide up when you press a switch (0 – 1.5 s). Release is instant. Right-click → **Tempo Sync** to set it in note values (1/32 – 2 bars) instead. |
 | **DETUNE** | Adds two detuned voices around the octave: from a gentle chorus to dissonant chaos. |
 | **RUIN** | Random pitch wobble and stutter. Low settings drift, high settings fall apart. |
-| **RING** | A resonant comb in front of the shifter: metallic ringing that grows towards the top of the knob. Combined with ORDER it turns into a smeared, unstable drone. |
+| **RING** | A resonant comb in front of the shifter: metallic ringing that grows towards the top of the knob. Combined with RUIN it turns into a smeared, unstable drone. |
 | **INPUT** | Input gain, −24 to +24 dB. |
 | **GATE** | Noise gate threshold. Fully left is **Off**. |
 | **BLEND** | Dry/wet mix while a switch is engaged. |
@@ -47,6 +47,15 @@ loading it.
 - Your presets are files in `~/Library/Application Support/Die Noise/Presets` (macOS) or
   `%APPDATA%\Die Noise\Presets` (Windows), so they are easy to back up and share.
 - Presets store the sound only: footswitch states, Latch and Mono/Stereo are left as they are.
+
+## Where to put it in your chain
+
+Die Noise is meant to go **after** your guitar processing, as the last effect in the chain. It works best
+on a sound that is already shaped, because the pitch shifter then follows whatever the amp and the cab do.
+
+Example (how Kings Die Here use it): record the guitar clean (DI) → amp simulator (the Misha Mansur plugin)
+→ **Die Noise**. Put it before the amp and the shifted notes get distorted by the amp instead,
+which sounds very different, so try both.
 
 ## MIDI control
 
