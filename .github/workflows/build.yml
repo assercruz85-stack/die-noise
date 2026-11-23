@@ -1,0 +1,46 @@
+name: Build
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Configure
+        run: cmake -B build -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build
+        run: cmake --build build --config Release --target TheCalm_VST3 TheCalm_CLAP
+
+      - name: Collect (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          mkdir dist
+          find build -name "*.vst3" -maxdepth 6 -exec cp -R {} dist/ \;
+          find build -name "*.clap" -maxdepth 6 -exec cp -R {} dist/ \;
+          cd dist && zip -r ../plugin-macos.zip .
+
+      - name: Collect (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory dist | Out-Null
+          Get-ChildItem -Path build -Recurse -Directory -Filter *.vst3 | Copy-Item -Destination dist -Recurse
+          Get-ChildItem -Path build -Recurse -Filter *.clap -File | Copy-Item -Destination dist
+          Compress-Archive -Path dist\* -DestinationPath plugin-windows.zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: plugin-${{ runner.os }}
+          path: plugin-*.zip
