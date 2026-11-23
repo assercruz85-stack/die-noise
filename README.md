@@ -50,12 +50,13 @@ loading it.
 
 ## Where to put it in your chain
 
-Die Noise is meant to go **after** your guitar processing, as the last effect in the chain. It works best
-on a sound that is already shaped, because the pitch shifter then follows whatever the amp and the cab do.
+Die Noise must be used **after** your guitar processing, as the last plugin in the chain.
 
-Example (how Kings Die Here use it): record the guitar clean (DI) → amp simulator (the Misha Mansur plugin)
-→ **Die Noise**. Put it before the amp and the shifted notes get distorted by the amp instead,
-which sounds very different, so try both.
+Signal chain (how Kings Die Here use it):
+
+1. Guitar recorded clean (**DI**)
+2. Amp simulator: the **Misha Mansur** plugin
+3. **Die Noise**
 
 ## MIDI control
 
